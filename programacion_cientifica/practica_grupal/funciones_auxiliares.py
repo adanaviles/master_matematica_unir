@@ -1,4 +1,11 @@
 ###############################################################################
+##                                                                           ##
+#                         Fichero con las funciones                           #
+##                                                                           ##
+###############################################################################
+
+
+###############################################################################
 ##                              Import packages                              ##
 ###############################################################################
 
@@ -13,12 +20,12 @@ import math
 # Seno
 sin_vec  = np.vectorize(math.sin)
 
-#Funcion de runge
-def runge_func(x):
+#Funcion de runge, no es necesario vectorizarla.
+def runge_vec(x):
     value = 1/(1+25*x**2)
     return value
 
-runge_vec = np.vectorize(runge_func)
+
 
 # Función exponencial
 def exp_func(x):
@@ -31,3 +38,5 @@ exp_vec = np.vectorize(exp_func)
 ###############################################################################
 ##                   Definicion de funciones  auxiliares                     ##
 ###############################################################################
+# Funcion para el método de las diferencias divididas.
+# Podemos usar sumpy para matemáticas simbólicas y devolver polinomio, lambdify.
