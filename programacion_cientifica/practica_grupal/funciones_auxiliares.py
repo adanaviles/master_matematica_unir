@@ -44,7 +44,7 @@ def diferencias_divididas(xi, yi):
     """ Funcion que crea las diferencias divididas y devuelve el polinomio de Newton, junto a una funcion ejecutable.
 
     Args:
-        xi:  Array de las equis
+        xi: Array de las equis
         yi: Array de los valores
 
     Returns:
