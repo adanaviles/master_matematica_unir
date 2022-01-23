@@ -1,10 +1,10 @@
-%% Ejercicio 1
+%% Ejercicio 1 / 2
 % Sabiendo que R = 56
 L = @(x) 1./(sqrt(1-(x/56).^2))
-f = @(x) (sqrt(56^2-x^2))
+f = @(x) sqrt(56^2-x.^2)
 a = (-56)/2
 b = (9*56)/10
-
+g = @(x,y) x.*sqrt(56^2-x.^2)
 % Podemos comprobar el codigo optimizado con tic y toc
 tic;
 I = simpson_varias_variables(f, a, b, c, d, 500, 500)
@@ -14,6 +14,7 @@ I = simpson_varias_variables_optimizadas(f, a, b, c, d, 500, 500)
 toc;
 
 
+funcion_h = @(x, y) sqrt((x.^ 2 + y.^ 2)./(9 - x.^ 2 - y.^ 2))
 
 function I = trapecios(f,a,b,n)
     % I = trapecios(f,a,b,n) devuelve la integral de f(x)
@@ -36,11 +37,11 @@ function I = simpson(f,a,b,n)
 end
     
 
-function [xi ci I] = gausslegendre(f, n, a = -1, b = 1)
+function I = gausslegendre(f, n, a = -1, b = 1)
     % xi, ci = gausslegendre(n) obtiene los
     % coeficientes ci y nodos xi de la cuadratura de
     % Gauss-Legendre para un n dado
-    x = sym('x') %Creo una variable simbolica para los polinomios
+    syms x %Creo una variable simbolica para los polinomios
     p{1} = 1; %Creo p_0, p_1. 
     p{2} = x; 
     for k = 1:n-1
