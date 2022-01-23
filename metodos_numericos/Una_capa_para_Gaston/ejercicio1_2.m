@@ -12,7 +12,7 @@ toc;
 tic;
 I = simpson_varias_variables_optimizadas(f, a, b, c, d, 500, 500)
 toc;
-
+% test comentario
 
 
 function I = trapecios(f,a,b,n)
