@@ -13,8 +13,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from sympy import symbols, lambdify, pprint
+from numpy.polynomial import chebyshev
 
-###############################################################################
+##############################
+# #################################################
 ##                   Definicion de funciones  para ejercicios                ##
 ###############################################################################
 
@@ -22,11 +24,11 @@ from sympy import symbols, lambdify, pprint
 sin_vec  = np.vectorize(math.sin)
 
 #Funcion de runge, no es necesario vectorizarla.
-def runge_vec(x):
+def runge_func(x):
     value = 1/(1+25*x**2)
     return value
 
-
+runge_vec = np.vectorize(runge_func)
 
 # Función exponencial
 def exp_func(x):
@@ -39,7 +41,9 @@ exp_vec = np.vectorize(exp_func)
 ###############################################################################
 ##                   Definicion de funciones  auxiliares                     ##
 ###############################################################################
+############################
 # Funcion para el método de las diferencias divididas.
+############################
 def diferencias_divididas(xi, yi):
     """ Funcion que crea las diferencias divididas y devuelve el polinomio de Newton, junto a una funcion ejecutable.
 
@@ -76,3 +80,97 @@ def diferencias_divididas(xi, yi):
         pol = pol+matriz[0][j]*vx
     pol_numpy = lambdify(x, pol, 'numpy')
     return matriz, pol, pol_numpy
+############################
+# Funcion que devuelve los nodos y ordenadas de Chebyshev para una función
+# e intervalo dados
+############################
+def nodos_ordenadas(funcion, nodos, intervalo):
+    """ Funcion que devuelve los nodos y ordenadas para una función
+        e intervalo dados.
+
+    Args:
+        funcion: Funcion que se aplica para encontrar las ordenadas
+        puntos: Numero de nodos que queremos
+        intervalo: Intervalo en el que estudiaremos en formato array [a,b]
+
+    Returns:
+        nodos: Nodos
+        ordenadas: Ordenadas funcion(nodos)
+
+    """
+    coefs_Cheby = [0]*nodos+[1]
+    Tpuntos = chebyshev.Chebyshev(coefs_Cheby, intervalo)
+    nodos_cheby = Tpuntos.roots()
+    ordenadas_cheby = funcion(nodos_cheby)
+    return nodos, ordenadas
+
+
+############################
+# Funcion que devuelve los nodos y ordenadas de Chebyshev para una función
+# e intervalo dados
+############################
+def nodos_ordenadas_cheby(funcion, nodos, intervalo):
+    """ Funcion que devuelve los nodos y ordenadas de Chebyshev para una función
+        e intervalo dados.
+
+    Args:
+        funcion: Funcion que se aplica para encontrar las ordenadas
+        puntos: Numero de nodos que queremos
+        intervalo: Intervalo en el que estudiaremos en formato array [a,b]
+
+    Returns:
+        nodos_cheby: Nodos de Chebyshev
+        ordenadas_cheby: Ordenadas de Chebyshev; funcion(nodos)
+
+    """
+    coefs_Cheby = [0]*nodos+[1]
+    Tpuntos = chebyshev.Chebyshev(coefs_Cheby, intervalo)
+    nodos_cheby = Tpuntos.roots()
+    ordenadas_cheby = funcion(nodos_cheby)
+    return nodos_cheby, ordenadas_cheby
+
+############################
+# Función que calcula la interpolacion baricentrica y devuelve error, tiempo y plot.
+############################
+def inter_bar(nodos,funcion,intervalo):
+    """ Esta función hace la interpolación baricéntrica, crea su plot y calcula el error y tiempo
+    que se tarda en hacer la interpolación. 
+    
+    Args:
+        nodos : Lista de nodos para interpolar 
+        funcion :  Funcion que se quiere interpolar.
+        intervalo : Lista de puntos donde se evaluará el polinomio baricentrico tras ser calculado
+        
+    Returns:
+        pol: Devuelve el valor de los puntos del intervalo evaluados con el polinomio interpolador.
+             Recordemos que barycentric_interpolate no nos devuelve los coeficientes del polinomio, 
+             sino que evalua el polinomio en el intervalo que le damos.
+        fig: Devuelve el plot.
+        tiempo_ejecucion: Tiempo que tarda en ejecutarse la interpolacion
+        error: Error de la interpolacion respecto al intervalo original.
+        
+        
+    """
+    # Recordemos que barycentric_interpolate no nos devuelve los coeficientes del polinomio, 
+    # sino que evalua el polinomio en el intervalo que le damos.
+    abscisas_nodo = funcion(nodos)
+    inicio =time.perf_counter()
+    pol = barycentric_interpolate(nodos, abscisas_nodo, intervalo)
+    fin = time.perf_counter()
+    # Tiempo total
+    tiempo_ejecucion = str(fin-inicio) + ' segundos'
+    
+    # Error total
+    error = norm(pol-funcion(intervalo))
+    
+    # Creacion del plot
+    fig = plt.figure()
+    plt.plot(nodos, abscisas_nodo, "ko", figure=fig)
+    plt.xlabel('x', figure=fig)
+    plt.plot(intervalo, pol,'c',label='polinomio interpolador', figure=fig)
+    plt.plot(intervalo,funcion(intervalo),'g:',label='función', figure=fig)
+    plt.title("Interpolación baricéntrica", figure=fig)
+    plt.legend()
+    plt.close(fig) #Usado para no mostrar la figura por pantalla al ejecutar la funcion
+    
+    return pol, fig, tiempo_ejecucion, error
