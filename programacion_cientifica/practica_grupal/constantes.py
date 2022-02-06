@@ -95,7 +95,7 @@ nodos_cheby_runge_11, ordenadas_cheby_runge_11 = F.nodos_ordenadas_cheby(F.runge
                                                        [-1, 1])
 
 # Para los nodos de 21
-nodos_cheby_runge_11, ordenadas_cheby_runge_11 = F.nodos_ordenadas_cheby(F.runge_vec,
+nodos_cheby_runge_21, ordenadas_cheby_runge_21 = F.nodos_ordenadas_cheby(F.runge_vec,
                                                        21,
                                                        [-1, 1])
 
