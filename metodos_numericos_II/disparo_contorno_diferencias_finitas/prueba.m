@@ -1,49 +1,65 @@
-
-
-[x,y] = DiFiLinealPractica(0, pi/2, -1, 1, 99)
-
-% function y = p(x)
-%     y = -2./x;
-% end
-
-% function y = q(x)
-%     y = 2./x.^2;
-% end
-
-% function y = r(x)
-%     y = sin(log(x))./x.^2;
-% end
-
-% Para la practica
-p = @ (x) 
-
+for i = 1:10
+    tic
+    [x,y] = DiFiLinealPractica2(0,pi/2,-1,1,101);
+    toc
+end
 %  no necesitamos establecer p,q,r pues ya hemos hecho los calculos
 function [x,y] = DiFiLinealPractica(a, b, alfa, beta, N)
     % Diferencias finitas ,
     % Problema lineal de segundo orden con
     %condiciones Dirichlet
     % N es el numero de incognitas
-    h = (b-a)/(N+1) ;
+    h = (b-a)/(N-1) ;
     x = a:h:b;
     X = x(:) ;
     % Definimos la diagonal principal
-    dp = h^2*-2 + zeros(N,1); 
+    dp = (h^2-2)*ones(1,length(x));
     dp(1) = -h^2* - 2*h - 2; 
-    dp(N+1) = (-1/3)*h^2 + (4/3)*h - 2
+    dp(end) = (-1/3)*h^2 + (4/3)*h - 2;
     % Definimos la diagonal superior
-    ds = 1 - h + zeros(N-1,1); 
+    ds = (1-h)*ones(1,length(x)-1);  
     ds(1) = 2;
     % Definimos la diagonal inferior
-    di = 1 + h + zeros(N-1,1); 
-    di(N) = 2;
-    %Definimos los terminos independientes, en este caso usamos el coseno
-    rx = feval(@(x) -2*cos(x), X);
-    d = h^2*rx;
+    di = (1+h)*ones(1,length(x)-1);  
+    di(end) = 2;
+    % Definimos los terminos independientes, en este caso usamos el coseno
+    % ya estamos evaluando, pues X tiene valores
+    d = -2*h^2.*cos(X);
     d(1) = d(1) - 2*h*(1 + h)*alfa;
-    d(N+1) = d(N+1) +(4/3)*h*(1 - h)*beta;
+    d(end) = d(end) +(4/3)*h*(1 - h)*beta;
+    % Resolvemos mediante Crout
     y = Crout(dp , ds, di, d);
-    y = [ alfa; y; beta];
 end
+
+% Este no usa crout
+function [x,y] = DiFiLinealPractica2(a, b, alfa, beta, N)
+    % Diferencias finitas ,
+    % Problema lineal de segundo orden con
+    %condiciones Dirichlet
+    % N es el numero de incognitas
+    h = (b-a)/(N-1) ;
+    x = a:h:b;
+    X = x(:) ;
+    % Definimos la diagonal principal
+    dp = (h^2-2)*ones(1,length(x));
+    dp(1) = -h^2* - 2*h - 2; 
+    dp(end) = (-1/3)*h^2 + (4/3)*h - 2;
+    % Definimos la diagonal superior
+    ds = (1-h)*ones(1,length(x)-1);  
+    ds(1) = 2;
+    % Definimos la diagonal inferior
+    di = (1+h)*ones(1,length(x)-1);  
+    di(end) = 2;
+    % Definimos los terminos independientes, en este caso usamos el coseno
+    % ya estamos evaluando, pues X tiene valores
+    d = -2*h^2.*cos(X);
+    d(1) = d(1) - 2*h*(1 + h)*alfa;
+    d(end) = d(end) +(4/3)*h*(1 - h)*beta;
+    % Creamos la matriz con las 3 diagonales
+    A = diag(dp,0)+diag(ds,1)+diag(di,-1); 
+    y=A\d; %Resolvemos el sistema de ecuaciones por Gauss
+end
+
 
 
 function [x,y] = DiFiLineal(p, q, r, a, b, alfa, beta, N)
