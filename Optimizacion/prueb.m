@@ -1,0 +1,1 @@
+feval('derivada_funcionrr',2)
