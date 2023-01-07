@@ -13,7 +13,7 @@ class DatasetGenerator:
     def _check_dni(self):
         """
         Check if DNI is well defined
-        Returns: The error
+        Returns: The error if is not
 
         """
         if not isinstance(self.dni, str):
@@ -37,7 +37,7 @@ class DatasetGenerator:
                         n_informative=10+int(self.dni[1]),  # 14
                         n_targets=1,
                         bias=2,
-                        noise=10*int(self.dni[3]),  # 17
+                        noise=10*int(self.dni[3]),  # 70
                         shuffle=False,
                         random_state=int(self.dni))
         list_of_features = [
