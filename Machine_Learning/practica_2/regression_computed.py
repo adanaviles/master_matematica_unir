@@ -34,7 +34,7 @@ if __name__ == '__main__':
     ##exportar figuras tambien
     clf = DecisionTreeClassifier(random_state=48778094)
     clf = clf.fit(X_train, y_train)
-    y_pred = clf.predict(X_test)
+    y_pred = clf.predict(X_test)h
     print(accuracy_score(y_test, y_pred))
     # roc auc
     # predict_proba produce la probabilidad de caer en una clase u otra
