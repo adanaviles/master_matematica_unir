@@ -1,1 +1,0 @@
-### Trabajos de Métodos Numéricos
