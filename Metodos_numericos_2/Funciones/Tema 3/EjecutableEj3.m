@@ -1,0 +1,14 @@
+f=@(x,y,z)x.*y.*z-x.*cos(x).*y-sin(x);
+fy=@(x,y,z)x.*z-x.*cos(x);
+fz=@(x,y,z)x.*y;
+a=0;
+b=pi;
+alfa=1;
+beta=2;
+N=19;
+maxiter=50;
+tol=1e-5;
+[X,Y,iter ,incr ]= DifnolinB (f,fy ,fz ,a,b,alfa , beta ,N,maxiter ,tol)
+ex=@(x)sin(x);
+exacta=ex(X);
+Error=abs(exacta-Y);

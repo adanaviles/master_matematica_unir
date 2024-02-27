@@ -1,3 +1,5 @@
-# ¿Qué es?
-En este repositorio iré subiendo los trabajos que haga a lo largo del máster en Matemática y Computacional de la UNIR. Cualquier duda sobre los códigos se responderá sin problema. 
-No todo está comentado o explicado, lo iré mejorando con el tiempo.
+### Master en Ingeniería Matemática y Computación por la UNIR
+En este repositorio se pueden encontrar distitos apuntes, exámenes y prácticas resueltas del Master en Matemática 
+Computacional de la UNIR.
+
+Si alguna persona requiere que se borre algún fichero, le ruego contacte conmigo. 

@@ -1,0 +1,37 @@
+f=@(x) sin(x)+x^2;
+a=1e5;
+b=-1e5;
+
+[xoptimo,I] = incu(f,a,b,1e-5) ;
+
+function [x_gorro,I] = incu(f,a,b,tol)
+%Metodo de la busqueda dicotomica
+epsilon = 1e-5;
+I=0;
+x1=a;
+x3=b;
+x2=(x1+x2fx/2);
+x0=1e10;
+f1=feval(f,x1);
+f2=feval(f,x2);
+f3=feval(f,x3);
+numerador = (x2^2-x3^2)*f1+(x3^2-x1^2)*f2+(x1^2-x2^2)*f3;
+denominador = 2*((x2-x3)*f1+(x3-x2)*f2+(x1-x2)*f3)
+x_gorro = numerador/denominador
+while (b-a)<tol
+    x1=(a+b)/2;
+    xa=x1-epsilon;
+    xb=x1+epsilon;
+    fa=feval(f,a);
+    fb=feval(f,b);
+    if fa<fb
+        b=xb;
+    elseif fa>fb
+        a=xa;
+    else
+        a=xa;
+        b=xb;
+    end
+    I=I+1;
+end
+end
